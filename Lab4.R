@@ -4,12 +4,19 @@ options(digits=5)
 # Read the data from the file.
 current_data <- read.table(file = "input_files/input_lab4.txt")
 
-# Save and print the average value of the series.
-series_mean <- mean(current_data[,2])
-series_mean
-
 # Save the length of the series.
 series_length <- length(current_data[,2])
+
+# Save and print the average level of the series. 
+chrono_average <- sum(current_data[,2])
+chrono_average <- chrono_average - (current_data[1, 2] / 2)
+chrono_average <- 
+  chrono_average - (current_data[series_length, 2] / 2)
+chrono_average <- chrono_average / (series_length - 1)
+chrono_average
+
+# Save the average value of the series.
+series_mean <- mean(current_data[,2])
 
 # ----------------------------------------------------------------------------
 # Working the series criteria.
@@ -23,18 +30,8 @@ series_table <- current_data
 series_table[1:series_length, 3] <- 
   ifelse(series_table[1:series_length, 2] < series_mean, 1, 0)
 
-series_table
-
-# Count the number of series (R number for the formula).
-current_type <- series_table[1, 3]
-number_of_series <- 1
-
-for (i in 1:series_length) {
-  if (current_type != series_table[i, 3]) {
-    number_of_series <- number_of_series + 1
-  }
-  current_type = series_table[i, 3]
-}
+# Count the number of series.
+number_of_series <- length(rle(series_table[,3])$lengths)
 
 # Specify t coefficient (corresponding to the confidence level p = 0.95).
 t_coefficient = 1.96
@@ -53,7 +50,7 @@ if (number_of_series >=
 }
 
 # ----------------------------------------------------------------------------
-# Working the smoothing.
+# Working with the smoothing.
 
 # Use three-level moving average method. Put necessary values to the
 # third column of the original table.
@@ -84,7 +81,7 @@ if (series_length %% 2 == 0) {
 }
 
 # Count linear coefficients.
-a0_coefficient <- series_mean
+a0_coefficient <- chrono_average
 a1_coefficient <- sum(current_data[,1] * current_data[,2])
 a1_coefficient <- a1_coefficient / sum(current_data[,1]^2)
 
@@ -93,9 +90,9 @@ current_data[1:series_length, 4] <-
   a0_coefficient + a1_coefficient * current_data[1:series_length, 1]
 
 # ----------------------------------------------------------------------------
-# Working the plot.
+# Working with the plot.
 
-plot(current_data[,2], type = "l", col = "black", lwd = 2, 
+plot(current_data[,2], type = "l", col = "black",
      xlab = "T", ylab = "Y", main = "График")
-lines(current_data[,3], type = "l", col = "blue", lwd = 2)
-lines(current_data[,4], type = "l", col = "red", lwd = 2)
+lines(current_data[,3], type = "l", col = "blue")
+lines(current_data[,4], type = "l", col = "red")
