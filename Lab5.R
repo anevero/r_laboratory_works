@@ -4,6 +4,10 @@ options(digits=5)
 # Read the data from the file.
 current_data <- read.table(file = "input_files/input_lab5.txt")
 
+# Scale the data.
+current_data[1] <- scale(current_data[1])
+current_data[2] <- scale(current_data[2])
+
 # ----------------------------------------------------------------------------
 # Working with two clusters.
 
