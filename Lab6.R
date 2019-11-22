@@ -3,13 +3,17 @@ library(MASS)
 # Save the number of all the pairs of values.
 number_of_values <- 30
 
+# Save the number of letters in the surname (it will be used later, according 
+# to the task).
+generation_constant <- 6
+
 # Generate first 20 pairs of values.
-x1 <- rnorm(20, mean = 0, sd = 2)
-y1 <- rnorm(20, mean = 0, sd = 2)
+x1 <- rnorm(20, mean = 0, sd = generation_constant %/% 3)
+y1 <- rnorm(20, mean = 0, sd = generation_constant %/% 3)
 
 # Generate second 10 pairs of values.
-x2 <- rnorm(10, mean = 6, sd = 2)
-y2 <- rnorm(10, mean = 6, sd = 2)
+x2 <- rnorm(10, mean = generation_constant, sd = generation_constant %/% 3)
+y2 <- rnorm(10, mean = generation_constant, sd = generation_constant %/% 3)
 
 # Bind two-dimensional data.
 data <- cbind(c(x1, x2), c(y1, y2))
@@ -20,12 +24,12 @@ two_clusters <- kmeans(data, 2)
 # Save clusters data.
 clusters_data <- two_clusters$cluster
 
-# ----------------------------------------------------------------------------
-# The first task.
-
 # Save the number of training and testing pairs.
 number_of_training <- floor(30 * 0.7)
 number_of_testing <- number_of_values - number_of_training
+
+# ----------------------------------------------------------------------------
+# The first task.
 
 # Create training and testing data subsets.
 
@@ -37,7 +41,7 @@ training_indexes <- sample(1:number_of_values, number_of_training)
 testing_indexes <- 
   (1:number_of_values)[!(1:number_of_values %in% training_indexes)]
 
-# Save the inofrmation about the real clusters of the training and testing data.
+# Save the information about the real clusters of the training and testing data.
 training_clusters <- clusters_data[training_indexes]
 testing_clusters <- clusters_data[testing_indexes]
 
@@ -63,6 +67,7 @@ points(data[training_indexes,],
        col = ifelse(training_clusters == 1, "blue", "green"), pch = 2)
 points(data[testing_indexes,],
        col = ifelse(testing_clusters == 1, "blue", "green"), pch = 1)
+
 points(data[incorrect_indexes,], col = "red")
 
 # ----------------------------------------------------------------------------

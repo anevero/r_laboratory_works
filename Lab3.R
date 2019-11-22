@@ -13,7 +13,7 @@ x_vector_mean = mean(x_vector)
 x_vector_sd = sd(x_vector)
 
 # ----------------------------------------------------------------------------
-# Working the first table.
+# Working with the first table.
 
 # Create the vector, which will become the base of the table.
 first_table_base_vector <- rep(0, 15)
